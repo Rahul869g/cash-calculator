@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Toaster, toast } from "react-hot-toast";
 
 const denominations = [
   { value: 500, label: "₹500" },
@@ -49,8 +50,8 @@ const CashCalculator = () => {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard
         .writeText(details)
-        .then(() => alert("Details copied to clipboard"))
-        .catch((err) => console.error("Error copying text: ", err));
+        .then(() => toast.success("Details copied to clipboard"))
+        .catch((err) => toast.error("Error copying text: " + err));
     } else {
       // Fallback method
       const textArea = document.createElement("textarea");
@@ -59,9 +60,9 @@ const CashCalculator = () => {
       textArea.select();
       try {
         document.execCommand("copy");
-        alert("Details copied to clipboard");
+        toast.success("Details copied to clipboard");
       } catch (err) {
-        console.error("Error copying text: ", err);
+        toast.error("Error copying text: " + err);
       }
       document.body.removeChild(textArea);
     }
@@ -124,6 +125,7 @@ const CashCalculator = () => {
           <strong>Total Amount :</strong> ₹{totalAmount}
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };
