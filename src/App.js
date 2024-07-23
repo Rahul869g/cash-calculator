@@ -71,7 +71,7 @@ const CashCalculator = () => {
   return (
     <div className="p-4 max-w-lg mx-auto bg-gray-900 text-white rounded-lg shadow-lg">
       <div className="flex items-center justify-between my-4">
-        <h1 className="text-2xl font-bold">Cash Calculator</h1>
+        <h1 className="text-2xl font-bold">Cash Counter</h1>
         <div className="flex space-x-2">
           <button
             className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
