@@ -69,8 +69,10 @@ const TeaCalculator = () => {
   return (
     <div className="p-6 max-w-lg mx-auto bg-gray-900 text-white rounded-lg shadow-lg font-sans transition-all duration-300">
       <div className="flex items-center justify-between my-4">
-        <h1 className="text-3xl font-bold text-yellow-300">Tea Calculator</h1>
-        <div className="space-x-3">
+        <h1 className="text-2xl md:text-3xl font-bold text-yellow-300">
+          Tea Calculator
+        </h1>
+        <div className="space-x-2 md:space-x-3">
           <button
             className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition duration-200"
             onClick={() => setShowCashCalculator(!showCashCalculator)}
