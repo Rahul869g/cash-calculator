@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { ToWords } from "to-words";
+import TeaCalculator from "./TeaCalculator"; // Import the TeaCalculator component
+
 // Configure ToWords instance for Indian currency
 const toWords = new ToWords({
   localeCode: "en-IN",
@@ -32,6 +34,7 @@ const denominations = [
 
 const CashCalculator = () => {
   const [counts, setCounts] = useState(denominations.map(() => ""));
+  const [showTeaCalculator, setShowTeaCalculator] = useState(false); // Manage TeaCalculator visibility
 
   const handleChange = (index, value) => {
     const newCounts = [...counts];
@@ -91,12 +94,21 @@ const CashCalculator = () => {
       document.body.removeChild(textArea);
     }
   };
+  if (showTeaCalculator) {
+    return <TeaCalculator />; // Show TeaCalculator if the button is clicked
+  }
 
   return (
     <div className="p-4 max-w-lg mx-auto bg-gray-900 text-white rounded-lg shadow-lg font-sans">
       <div className="flex items-center justify-between my-4">
         <h1 className="text-2xl font-bold">Cash Counter</h1>
         <div className="flex space-x-2">
+          <button
+            className="bg-[#eab16b] hover:bg-[#c18a45] text-white font-bold py-2 px-4 rounded-lg transition duration-200"
+            onClick={() => setShowTeaCalculator(!showTeaCalculator)} // Toggle TeaCalculator visibility
+          >
+            Tea
+          </button>
           <button
             className="bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-lg transition duration-200"
             onClick={resetCounts}
@@ -111,6 +123,7 @@ const CashCalculator = () => {
           </button>
         </div>
       </div>
+
       <table className="w-full mb-4 ">
         <thead>
           <tr className="bg-gray-700">
