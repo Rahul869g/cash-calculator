@@ -34,6 +34,7 @@ const denominations = [
 
 const CashCalculator = () => {
   const [counts, setCounts] = useState(denominations.map(() => ""));
+  const [tally, setTally] = useState(""); // New state for tally
   const [showTeaCalculator, setShowTeaCalculator] = useState(false); // Manage TeaCalculator visibility
 
   const handleChange = (index, value) => {
@@ -44,6 +45,7 @@ const CashCalculator = () => {
 
   const resetCounts = () => {
     setCounts(denominations.map(() => ""));
+    setTally(""); // Reset tally as well
   };
 
   const totalAmount = counts.reduce(
@@ -57,6 +59,10 @@ const CashCalculator = () => {
   );
 
   const amountInWords = toWords.convert(totalAmount, { currency: true });
+
+  // Calculate the difference between tally and total
+  const tallyDifference = parseInt(tally, 10) - totalAmount;
+
   // Function to capitalize the first letter of a string
   const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
@@ -94,6 +100,7 @@ const CashCalculator = () => {
       document.body.removeChild(textArea);
     }
   };
+
   if (showTeaCalculator) {
     return <TeaCalculator />; // Show TeaCalculator if the button is clicked
   }
@@ -124,7 +131,26 @@ const CashCalculator = () => {
         </div>
       </div>
 
-      <table className="w-full mb-4 ">
+      {/* Tally Input box */}
+      <div className="mb-4 w-full flex justify-between items-center">
+        <input
+          type="number"
+          className="w-1/2 p-2 border rounded bg-gray-800 border-gray-700 text-white"
+          value={tally}
+          placeholder="Enter tally amount"
+          onChange={(e) => setTally(e.target.value)}
+        />
+        <div className="ml-4 text-lg">
+          <strong>Difference:</strong>{" "}
+          {tallyDifference > 0
+            ? `+${tallyDifference.toLocaleString("en-IN")}`
+            : tallyDifference.toLocaleString("en-IN")}{" "}
+          ₹
+        </div>
+      </div>
+
+      {/* Denomination input table */}
+      <table className="w-full mb-4">
         <thead>
           <tr className="bg-gray-700">
             <th className="border border-gray-700 px-2 py-2">Denomination</th>
@@ -148,7 +174,9 @@ const CashCalculator = () => {
                 />
               </td>
               <td className="border border-gray-700 px-4 py-2">
-                ₹{(parseInt(counts[index], 10) || 0) * denomination.value}
+                ₹
+                {(parseInt(counts[index], 10) || 0) *
+                  denomination.value.toLocaleString("en-IN")}
               </td>
             </tr>
           ))}
@@ -159,7 +187,7 @@ const CashCalculator = () => {
           <strong>Total Notes:</strong> {totalNotes}
         </div>
         <div className="text-lg">
-          <strong>Total Amount:</strong> ₹{totalAmount}
+          <strong>Total Amount:</strong> ₹{totalAmount.toLocaleString("en-IN")}
         </div>
       </div>
       <div className="text-center text-xl font-semibold">
