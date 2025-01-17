@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { motion } from "framer-motion"; // For animation
+import CountUp from "react-countup";
+import TeaTimer from "./TeaTimer";
+
 import App from "./App";
 
 const TeaCalculator = () => {
@@ -28,6 +31,22 @@ const TeaCalculator = () => {
   const totalWaterMl = totalWater * cupToMl;
   const totalTeaLeavesG = totalTeaLeaves * tbspToG;
   const totalSugarG = totalSugar * tbspToG;
+
+  const AnimatedCounter = ({
+    end,
+    suffix = "",
+    decimals = 0,
+    duration = 0.8
+  }) => {
+    return (
+      <CountUp
+        end={end}
+        decimals={decimals}
+        suffix={suffix}
+        duration={duration}
+      />
+    );
+  };
 
   const copyDetails = () => {
     const details = `For ${cups} cup(s) of tea:\n- ${totalMilk.toFixed(
@@ -90,7 +109,7 @@ const TeaCalculator = () => {
 
       <div className="mb-6">
         <label className="block text-lg mb-2 font-medium">
-          Number of cups: {cups}
+          Number of cups: {<AnimatedCounter end={cups} />}
         </label>
         <input
           type="range"
@@ -115,22 +134,29 @@ const TeaCalculator = () => {
         </h2>
         <ul className="list-disc list-inside space-y-3 text-lg">
           <li>
-            <strong>Milk:</strong> {totalMilk.toFixed(2)} cups (
-            {totalMilkMl.toFixed(0)} ml)
+            <strong>Milk:</strong>{" "}
+            <AnimatedCounter end={totalMilk} decimals={2} /> cups (
+            <AnimatedCounter end={totalMilkMl} suffix=" ml" />)
           </li>
           <li>
-            <strong>Water:</strong> {totalWater.toFixed(2)} cups (
-            {totalWaterMl.toFixed(0)} ml) + a little more
+            <strong>Water:</strong>{" "}
+            <AnimatedCounter end={totalWater} decimals={2} /> cups (
+            <AnimatedCounter end={totalWaterMl} suffix=" ml" />) + a little more
           </li>
           <li>
-            <strong>Tea Leaves:</strong> {totalTeaLeaves.toFixed(2)} tablespoons
-            ({totalTeaLeavesG.toFixed(0)} g)
+            <strong>Tea Leaves:</strong>{" "}
+            <AnimatedCounter end={totalTeaLeaves} decimals={2} /> tablespoons (
+            <AnimatedCounter end={totalTeaLeavesG} suffix=" g" />)
           </li>
           <li>
-            <strong>Sugar:</strong> {totalSugar.toFixed(2)} tablespoons (
-            {totalSugarG.toFixed(0)} g)
+            <strong>Sugar:</strong>{" "}
+            <AnimatedCounter end={totalSugar} decimals={2} /> tablespoons (
+            <AnimatedCounter end={totalSugarG} suffix=" g" />)
           </li>
         </ul>
+      </div>
+      <div className="mt-6">
+        <TeaTimer />
       </div>
       <Toaster />
     </div>
