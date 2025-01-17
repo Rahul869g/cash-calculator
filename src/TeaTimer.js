@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const TeaTimer = () => {
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(10);
+  const [minutes, setMinutes] = useState(6);
+  const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [alert, setAlert] = useState(false);
 
