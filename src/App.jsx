@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Coffee, Files, History, Trash2 } from "lucide-react";
+
 import { Toaster, toast } from "react-hot-toast";
 import { ToWords } from "to-words";
 import TeaCalculator from "./TeaCalculator"; // Import the TeaCalculator component
@@ -171,26 +173,26 @@ const CashCalculator = () => {
             className="bg-[#eab16b] hover:bg-[#c18a45] text-white font-bold py-2 px-4 rounded-lg transition duration-200"
             onClick={() => setShowTeaCalculator(!showTeaCalculator)} // Toggle TeaCalculator visibility
           >
-            Tea
+            <Coffee size={20} />
           </button>
           <button
             className="bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-lg transition duration-200"
             onClick={resetCounts}
           >
-            Reset
+            <Trash2 size={20} />
           </button>
           <button
             className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg transition duration-200"
             onClick={copyDetails}
           >
-            Copy
+            <Files size={20} />
           </button>
           <button
             className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200"
             onClick={() => setShowHistory(!showHistory)}
             title="Toggle History"
           >
-            📜
+            <History size={20} />
           </button>
         </div>
       </div>
@@ -259,13 +261,14 @@ const CashCalculator = () => {
       </div>
       {showHistory && (
         <div className="mt-6 bg-gray-800 p-4 rounded-lg">
-          <div className="flex justify-between items-center mb-2">
+          <div className="flex justify-between px-5 items-center mb-2">
             <h2 className="text-lg  font-bold">History</h2>
             {history.length > 0 && (
               <button
-                className="text-red-500 text-sm hover:underline"
+                className="text-red-500 flex  items-center text-sm hover:underline"
                 onClick={deleteAll}
               >
+                {/* <Trash2 size={16} /> */}
                 Delete All
               </button>
             )}
@@ -288,16 +291,16 @@ const CashCalculator = () => {
                     </pre>
                     <div className="flex justify-end gap-2">
                       <button
-                        className="flex items-center gap-1 bg-blue-500 hover:bg-blue-600 text-white px-2 py-0.5 rounded text-xs transition"
+                        className="flex items-center gap-1 bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs transition"
                         onClick={() => copyEntry(entry.details)}
                       >
-                        📋 Copy
+                        <Files size={16} />
                       </button>
                       <button
-                        className="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-2 py-0.5 rounded text-xs transition"
+                        className="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-xs transition"
                         onClick={() => deleteEntry(entry.id)}
                       >
-                        🗑️ Delete
+                        <Trash2 size={16} />{" "}
                       </button>
                     </div>
                   </div>
