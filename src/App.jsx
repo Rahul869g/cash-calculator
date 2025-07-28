@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { ToWords } from "to-words";
 import TeaCalculator from "./TeaCalculator"; // Import the TeaCalculator component
@@ -36,6 +36,8 @@ const CashCalculator = () => {
   const [counts, setCounts] = useState(denominations.map(() => ""));
   const [tally, setTally] = useState(""); // New state for tally
   const [showTeaCalculator, setShowTeaCalculator] = useState(false); // Manage TeaCalculator visibility
+  const [history, setHistory] = useState([]);
+  const [showHistory, setShowHistory] = useState(false);
 
   const handleChange = (index, value) => {
     const newCounts = [...counts];
@@ -80,6 +82,26 @@ const CashCalculator = () => {
     details += `Total ₹${totalAmount}\n`;
     details += `[Total ${totalNotes} Notes]`;
 
+    const newEntry = {
+      id: Date.now(),
+      timestamp: new Intl.DateTimeFormat("en-IN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+      }).format(new Date()),
+      counts,
+      totalAmount,
+      totalNotes,
+      tally,
+      details
+    };
+    const updatedHistory = [newEntry, ...history]; // use existing state variable
+    localStorage.setItem("cashHistory", JSON.stringify(updatedHistory));
+    setHistory(updatedHistory); // update React state immediately
+
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard
         .writeText(details)
@@ -99,6 +121,41 @@ const CashCalculator = () => {
       }
       document.body.removeChild(textArea);
     }
+  };
+
+  useEffect(() => {
+    const savedCounts = JSON.parse(localStorage.getItem("cashCounts"));
+    const savedTally = localStorage.getItem("cashTally");
+    if (savedCounts) setCounts(savedCounts);
+    if (savedTally) setTally(savedTally);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("cashCounts", JSON.stringify(counts));
+    localStorage.setItem("cashTally", tally);
+  }, [counts, tally]);
+
+  useEffect(() => {
+    const savedHistory = JSON.parse(localStorage.getItem("cashHistory")) || [];
+    setHistory(savedHistory);
+  }, []);
+
+  const deleteEntry = (id) => {
+    const updated = history.filter((entry) => entry.id !== id);
+    localStorage.setItem("cashHistory", JSON.stringify(updated));
+    setHistory(updated);
+  };
+
+  const deleteAll = () => {
+    localStorage.removeItem("cashHistory");
+    setHistory([]);
+  };
+
+  const copyEntry = (text) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => toast.success("Copied to clipboard"))
+      .catch((err) => toast.error("Error copying: " + err));
   };
 
   if (showTeaCalculator) {
@@ -127,6 +184,13 @@ const CashCalculator = () => {
             onClick={copyDetails}
           >
             Copy
+          </button>
+          <button
+            className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200"
+            onClick={() => setShowHistory(!showHistory)}
+            title="Toggle History"
+          >
+            📜
           </button>
         </div>
       </div>
@@ -193,6 +257,57 @@ const CashCalculator = () => {
       <div className="text-center text-xl font-semibold">
         {capitalize(amountInWords)}
       </div>
+      {showHistory && (
+        <div className="mt-6 bg-gray-800 p-4 rounded-lg">
+          <div className="flex justify-between items-center mb-2">
+            <h2 className="text-lg  font-bold">History</h2>
+            {history.length > 0 && (
+              <button
+                className="text-red-500 text-sm hover:underline"
+                onClick={deleteAll}
+              >
+                Delete All
+              </button>
+            )}
+          </div>
+          {history.length === 0 ? (
+            <p className="text-gray-500 italic text-sm">No history yet.</p>
+          ) : (
+            <div className="max-w-md mx-auto px-5 py-2">
+              <div className="space-y-3 max-h-64 hide-scrollbar overflow-y-auto">
+                {history.map((entry) => (
+                  <div
+                    key={entry.id}
+                    className="bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 hover:shadow-sm transition-shadow"
+                  >
+                    <div className="text-gray-400 text-xs italic mb-1">
+                      {entry.timestamp}
+                    </div>
+                    <pre className="whitespace-pre-wrap text-white text-sm mb-2">
+                      {entry.details}
+                    </pre>
+                    <div className="flex justify-end gap-2">
+                      <button
+                        className="flex items-center gap-1 bg-blue-500 hover:bg-blue-600 text-white px-2 py-0.5 rounded text-xs transition"
+                        onClick={() => copyEntry(entry.details)}
+                      >
+                        📋 Copy
+                      </button>
+                      <button
+                        className="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-2 py-0.5 rounded text-xs transition"
+                        onClick={() => deleteEntry(entry.id)}
+                      >
+                        🗑️ Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       <Toaster />
     </div>
   );
