@@ -65,7 +65,7 @@ const CashCalculator = () => {
   const amountInWords = toWords.convert(totalAmount, { currency: true });
 
   // Calculate the difference between tally and total
-  const tallyDifference = parseInt(tally, 10) - totalAmount;
+  const tallyDifference = (Number(tally) || 0) - totalAmount;
 
   // Function to capitalize the first letter of a string
   const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
