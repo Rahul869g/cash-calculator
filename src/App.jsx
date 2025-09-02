@@ -201,17 +201,33 @@ const CashCalculator = () => {
       <div className="mb-4 w-full flex justify-between items-center">
         <input
           type="number"
-          className="w-1/2 p-2 border rounded bg-gray-800 border-gray-700 text-white"
+          className="w-1/2 p-2 border rounded bg-gray-800 border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
           value={tally}
           placeholder="Enter tally amount"
           onChange={(e) => setTally(e.target.value)}
         />
-        <div className="ml-4 text-lg">
-          <strong>Difference:</strong>{" "}
-          {tallyDifference > 0
-            ? `+${tallyDifference.toLocaleString("en-IN")}`
-            : tallyDifference.toLocaleString("en-IN")}{" "}
-          ₹
+        <div className="ml-4 mt-1 text-lg flex items-center  gap-2">
+          <strong>Difference:</strong>
+          <div className="flex flex-col items-start">
+            <span className="text-sm text-gray-500 flex self-end">
+              {tallyDifference < 0
+                ? "+ greater by"
+                : tallyDifference > 0
+                ? "- less by"
+                : ""}
+            </span>
+            <span
+              className={`font-semibold text-xl ${
+                tallyDifference < 0
+                  ? "text-green-600"
+                  : tallyDifference > 0
+                  ? "text-red-600"
+                  : "text-gray-700"
+              }`}
+            >
+              ₹ {Math.abs(tallyDifference).toLocaleString("en-IN")}
+            </span>
+          </div>
         </div>
       </div>
 
