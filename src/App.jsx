@@ -207,7 +207,7 @@ const CashCalculator = () => {
           onChange={(e) => setTally(e.target.value)}
         />
         <div className="ml-4 mt-1 text-lg flex items-center  gap-2">
-          <strong>Difference:</strong>
+          <strong>Diff : </strong>
           <div className="flex flex-col items-start">
             <span className="text-sm text-gray-500 flex self-end">
               {tallyDifference < 0
