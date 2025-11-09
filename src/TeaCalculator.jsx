@@ -148,8 +148,7 @@ const Stat: React.FC<{
 );
 
 /* ---------- Value Slider ---------- */
-const clamp = (v: number, min: number, max: number) =>
-  Math.min(max, Math.max(min, v));
+
 const ValueSlider: React.FC<{
   value: number,
   min: number,
@@ -276,6 +275,7 @@ const TeaCalculator = ({ onBack }) => {
   };
 
   // Steps
+  // Steps
   const steps = useMemo(() => {
     const plural = (n: number, one: string, many: string) =>
       n === 1 ? one : many;
@@ -293,15 +293,7 @@ const TeaCalculator = ({ onBack }) => {
         "times"
       )}. Strain and serve hot.`
     ];
-  }, [
-    c,
-    totalMilkMl,
-    totalWaterMl,
-    totalTeaLeavesG,
-    totalTeaLeaves,
-    totalSugarG,
-    totalSugar
-  ]);
+  }, [c]);
 
   if (showCashCalculator) return <CashCalculator />;
 

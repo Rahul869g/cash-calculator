@@ -3,7 +3,7 @@ import CashCalculator from "./CashCalculator";
 import TeaCalculator from "./TeaCalculator";
 
 const App = () => {
-  const [view, setView] = useState("cash");
+  const [view] = useState("cash");
 
   return (
     <div className="min-h-screen bg-gray-900  font-sans text-white flex items-start justify-center">

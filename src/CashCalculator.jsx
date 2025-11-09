@@ -96,21 +96,6 @@ const CashCalculator = () => {
   );
   const tallyNumber = Number(tally) || 0;
   const tallyDifference = tallyNumber - totalAmount;
-  const diffLabel =
-    tallyDifference < 0
-      ? "+ greater by"
-      : tallyDifference > 0
-      ? "- less by"
-      : "";
-
-  /* helpers */
-  const setCountAt = (i, next) => {
-    setCounts((prev) => {
-      const copy = [...prev];
-      copy[i] = String(clamp(Math.floor(next), 0));
-      return copy;
-    });
-  };
 
   const handleChange = (index, value) => {
     const clean = String(value).replace(/[^\d]/g, "");
