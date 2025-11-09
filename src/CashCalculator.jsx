@@ -179,12 +179,14 @@ const CashCalculator = () => {
   if (showTeaCalculator) return <TeaCalculator />;
 
   return (
-    <div className="p-4 max-w-lg mx-auto text-white font-sans">
+    <div className="p-4 max-w-lg mx-auto text-white font-sans overflow-x-hidden">
       {/* Toolbar */}
       <PanelCard className="mb-3">
         <div className="flex items-center justify-between px-3 py-3">
-          <h1 className="text-xl font-bold text-amber-300">Cash Counter</h1>
-          <div className="flex gap-2">
+          <h1 className="text-xl font-bold text-amber-300 truncate pr-2">
+            Cash Counter
+          </h1>
+          <div className="flex gap-2 shrink-0">
             <button
               className="h-10 w-10 rounded-xl bg-amber-400 text-black active:scale-95 transition flex items-center justify-center"
               onClick={() => setShowTeaCalculator(true)}
@@ -220,21 +222,21 @@ const CashCalculator = () => {
       {/* Tally vs Total */}
       <PanelCard className="mb-3">
         <div className="px-3 py-3">
-          {/* Align both columns and center them perfectly */}
-          <div className="grid grid-cols-[1fr_auto] items-center gap-6">
+          {/* Same layout, mobile-safe spacing & widths */}
+          <div className="grid grid-cols-[1fr_auto] items-center gap-3 sm:gap-6">
             {/* Left: Tally */}
-            <div className="flex flex-col justify-center">
+            <div className="flex flex-col justify-center min-w-0">
               <label className="block text-sm mx-auto text-white/70 mb-2 text-center sm:text-left">
                 Tally amount
               </label>
-              <div className="flex items-center gap-2 h-[52px]">
-                <span className="px-2 py-1 rounded-md bg-amber-400/15 text-sm text-amber-200">
+              <div className="flex items-center gap-2 h-[52px] min-w-0">
+                <span className="px-2 py-1 rounded-md bg-amber-400/15 text-sm text-amber-200 shrink-0">
                   ₹
                 </span>
                 <input
                   type="number"
                   inputMode="numeric"
-                  className="flex-1 h-full px-3 rounded-lg bg-[#0a1324] border border-indigo-400/20 text-center focus:outline-none focus:ring-2 focus:ring-amber-400/40"
+                  className="flex-1 min-w-0 h-full px-3 rounded-lg bg-[#0a1324] border border-indigo-400/20 text-center focus:outline-none focus:ring-2 focus:ring-amber-400/40"
                   placeholder="Enter tally"
                   value={tally}
                   onChange={(e) => setTally(e.target.value)}
@@ -242,13 +244,11 @@ const CashCalculator = () => {
               </div>
             </div>
 
-            {/* Right: Diff box (aligned with input box) */}
-            <div className="flex flex-col justify-center items-end min-w-[160px] h-full">
-              <label className="block text-sm  text-white/70 mb-2 text-center sm:text-right">
-                Diff :
-              </label>
+            {/* Right: Diff box */}
+            <div className="flex flex-col justify-center items-end text-right min-w-[140px] sm:min-w-[160px] h-full">
+              <label className="block text-sm text-white/70 mb-2">Diff :</label>
               <div
-                className={`inline-flex flex-col items-end justify-center px-4 py-2 h-[52px] rounded-lg text-sm font-semibold leading-tight whitespace-nowrap ${
+                className={`inline-flex flex-col items-end justify-center px-3 sm:px-4 py-2 h-[52px] rounded-lg text-sm font-semibold leading-tight whitespace-nowrap ${
                   tallyDifference < 0
                     ? "bg-emerald-500/15 text-emerald-300"
                     : tallyDifference > 0
@@ -285,24 +285,24 @@ const CashCalculator = () => {
                   key={d.value}
                   className="rounded-xl border border-indigo-400/20 bg-indigo-400/5 px-3 py-2"
                 >
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-between gap-2 sm:gap-3">
+                    <div className="flex items-center gap-3 shrink-0">
                       <div className="px-2 py-1 rounded-md bg-white/5 text-indigo-200 text-sm">
                         {d.label}
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                       <input
                         type="number"
                         inputMode="numeric"
                         pattern="[0-9]*"
-                        className="w-40 h-9 text-center rounded-lg bg-[#0a1324] border border-indigo-400/20 text-white"
+                        className="w-28 sm:w-40 h-9 text-center rounded-lg bg-[#0a1324] border border-indigo-400/20 text-white"
                         value={counts[i]}
                         placeholder="0"
                         onChange={(e) => handleChange(i, e.target.value)}
                       />
-                      <div className="w-28 text-sm tabular-nums text-amber-200 text-right">
+                      <div className="w-24 sm:w-28 text-sm tabular-nums text-amber-200 text-right truncate">
                         ₹{rowTotal.toLocaleString("en-IN")}
                       </div>
                     </div>
@@ -317,7 +317,7 @@ const CashCalculator = () => {
       {/* Summary */}
       <PanelCard className="mb-3">
         <div className="px-3 py-3">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-3">
             <div className="text-sm">
               <div className="text-indigo-200/80">Total Notes</div>
               <div className="text-xl font-semibold text-indigo-100">
@@ -342,12 +342,12 @@ const CashCalculator = () => {
         <PanelCard className="mb-2">
           <div className="px-3 py-3">
             <div className="flex items-center justify-between mb-2">
-              <h2 className="text-base font-semibold text-indigo-100">
+              <h2 className="text-base font-semibold text-indigo-100 truncate">
                 History
               </h2>
               {history.length > 0 && (
                 <button
-                  className="text-rose-400 text-sm hover:underline"
+                  className="text-rose-400 text-sm hover:underline shrink-0"
                   onClick={deleteAll}
                 >
                   Delete All
