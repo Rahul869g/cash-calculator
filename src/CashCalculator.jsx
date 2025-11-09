@@ -43,8 +43,6 @@ const denominations = [
   { value: 10, label: "₹10" }
 ];
 
-const clamp = (n, min = 0, max = 999999) => Math.min(max, Math.max(min, n));
-
 /* ---------- Component ---------- */
 const CashCalculator = () => {
   const [counts, setCounts] = useState(denominations.map(() => ""));
